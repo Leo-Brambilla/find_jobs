@@ -2,7 +2,9 @@ package br.com.leobrambilla.find_jobs.services;
 
 import br.com.leobrambilla.find_jobs.entities.Job;
 import br.com.leobrambilla.find_jobs.repositories.JobRepository;
+import br.com.leobrambilla.find_jobs.specifications.JobSpecifications;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,25 @@ public class JobService {
         return jobRepository.findAll();
     }
 
+    public List<Job> findByCriteria(Job.JobType jobType, Job.JobStatus jobStatus, String jobLocation, String jobRequisitions) {
+        Specification<Job> spec = Specification.where(null);
+
+        if (jobType != null) {
+            spec = spec.and(JobSpecifications.hasJobType(jobType));
+        }
+        if (jobStatus != null) {
+            spec = spec.and(JobSpecifications.hasJobStatus(jobStatus));
+        }
+        if (jobLocation != null && !jobLocation.isEmpty()) {
+            spec = spec.and(JobSpecifications.hasJobLocation(jobLocation));
+        }
+        if (jobRequisitions != null && !jobRequisitions.isEmpty()) {
+            spec = spec.and(JobSpecifications.hasJobRequisitions(jobRequisitions));
+        }
+
+        return jobRepository.findAll(spec);
+    }
+
     public Job findById(UUID id) {
         return jobRepository.findById(id).orElse(null);
     }
@@ -30,8 +51,6 @@ public class JobService {
             job.setJobTitle(updatedJob.getJobTitle());
             job.setNumberOfJobs(updatedJob.getNumberOfJobs());
             job.setPublicationDate(updatedJob.getPublicationDate());
-            job.setPayment(updatedJob.getPayment());
-            job.setCompany(updatedJob.getCompany());
             job.setJobDescription(updatedJob.getJobDescription());
             job.setJobStatus(updatedJob.getJobStatus());
             job.setJobType(updatedJob.getJobType());
