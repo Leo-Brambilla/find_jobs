@@ -8,7 +8,6 @@ import lombok.Builder;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -36,12 +35,6 @@ public class Job {
 
     @Column(name = "publication_date", nullable = false)
     private LocalDateTime publicationDate;
-
-    @Column(name = "payment", nullable = false)
-    private BigDecimal payment;
-
-    @Column(name = "company", nullable = false)
-    private String company;
 
     @Column(name = "job_description", nullable = false, columnDefinition = "TEXT")
     private String jobDescription;
