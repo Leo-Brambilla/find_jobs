@@ -1,7 +1,10 @@
 package br.com.leobrambilla.find_jobs.services;
 
+import br.com.leobrambilla.find_jobs.controllers.UserController;
 import br.com.leobrambilla.find_jobs.entities.User;
 import br.com.leobrambilla.find_jobs.repositories.UserRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +13,9 @@ import java.util.UUID;
 
 @Service
 public class UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
     @Autowired
     private UserRepository userRepository;
 
@@ -18,6 +24,7 @@ public class UserService {
     }
 
     public List<User> findAll() {
+        logger.info("Find all users");
         return userRepository.findAll();
     }
 

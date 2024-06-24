@@ -22,7 +22,7 @@ public class Job {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "job_id", updatable = false, nullable = false)
-    private UUID jobId;
+    private UUID id;
 
     @Column(name = "job_title", nullable = false)
     private String jobTitle;
