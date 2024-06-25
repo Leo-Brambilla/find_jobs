@@ -29,12 +29,16 @@ public class TokenService {
             return JWT.create()
                     .withIssuer("Find Jobs")
                     .withSubject(user.getUsername())
+                    .withClaim("role", getRoleAsString(user))
                     .withExpiresAt(expiresDate())
                     .sign(algorithm);
         } catch (JWTCreationException e) {
             logger.error("Error getting JWT token", e);
             throw new RuntimeException("Erro ao gerar o token JWT", e);
         }
+    }
+    private String getRoleAsString(User user) {
+        return String.join(",", user.getRoles());
     }
 
     public String getSubject(String tokenJWT) {
