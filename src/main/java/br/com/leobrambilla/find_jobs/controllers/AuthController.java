@@ -3,6 +3,7 @@ package br.com.leobrambilla.find_jobs.controllers;
 import br.com.leobrambilla.find_jobs.entities.User;
 import br.com.leobrambilla.find_jobs.repositories.UserRepository;
 import br.com.leobrambilla.find_jobs.services.TokenService;
+import br.com.leobrambilla.find_jobs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +23,8 @@ public class AuthController {
     private final PasswordEncoder passwordEncoder;
     @Autowired
     private final UserRepository userRepository;
+    @Autowired
+    private UserService userService;
 
     @Autowired
     public AuthController(AuthenticationManager authenticationManager, TokenService tokenService, PasswordEncoder passwordEncoder, UserRepository userRepository) {
@@ -44,9 +47,10 @@ public class AuthController {
 
     }
     @PostMapping("/signup")
-    public String signup(@RequestBody User user) {
+    public String signup(@RequestBody User user, @RequestParam String role) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        userService.addRoleToUser(savedUser.getId(), role);
         return "User registered successfully";
     }
 }

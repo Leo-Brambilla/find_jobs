@@ -15,6 +15,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -34,6 +36,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         logger.info("JWT token: {}", token);
         if (token != null) {
             try {
+                String decodedToken = URLDecoder.decode(token, StandardCharsets.UTF_8.name());
+                logger.info("decoded token: {}", decodedToken);
+
                 String username = tokenService.getSubject(token);
                 logger.info("JWT username: {}", username);
 
