@@ -3,6 +3,7 @@ package br.com.leobrambilla.find_jobs.controllers;
 import br.com.leobrambilla.find_jobs.entities.Job;
 import br.com.leobrambilla.find_jobs.services.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,16 +35,19 @@ public class JobController {
         return jobService.findById(id);
     }
 
+    @PreAuthorize("hasROle('ADMIN')")
     @PostMapping
     public Job createJob(@RequestBody Job job) {
         return jobService.save(job);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public Job updateJob(@PathVariable UUID id, @RequestBody Job job) {
         return jobService.update(id, job);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public void deleteJob(@PathVariable UUID id) {
         jobService.delete(id);

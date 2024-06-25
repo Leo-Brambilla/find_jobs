@@ -44,5 +44,11 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public void addRoleToUser(UUID id, String role) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        user.getRoles().add(role);
+        userRepository.save(user);
+    }
+
 }
 
