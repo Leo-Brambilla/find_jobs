@@ -43,7 +43,8 @@ public class JobService {
     }
 
     public Job findById(UUID id) {
-        return jobRepository.findById(id).orElse(null);
+
+        return jobRepository.findById(id).orElseThrow(() -> new RuntimeException("Job not found"));
     }
 
     public Job update(UUID id, Job updatedJob) {
