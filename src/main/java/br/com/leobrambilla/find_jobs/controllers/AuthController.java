@@ -5,12 +5,17 @@ import br.com.leobrambilla.find_jobs.repositories.UserRepository;
 import br.com.leobrambilla.find_jobs.services.TokenService;
 import br.com.leobrambilla.find_jobs.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
@@ -46,11 +51,15 @@ public class AuthController {
         }
 
     }
-    @PostMapping("/signup")
-    public String signup(@RequestBody User user, @RequestParam String role) {
+    @PostMapping(value = "/signup", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> signup(@RequestBody User user, @RequestParam String role) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User savedUser = userRepository.save(user);
         userService.addRoleToUser(savedUser.getId(), role);
-        return "User registered successfully";
+
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User registered successfully");
+
+        return ResponseEntity.ok().contentType(MediaType.APPLICATION_JSON).body(response);
     }
 }
