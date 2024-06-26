@@ -29,7 +29,7 @@
 
 ### Autenticação
 - `POST /auth/login`: Login de usuário.
-- `POST /auth/signup`: Cadastro de usuário.
+- `POST /auth/signup?role=ROLE_USER`: Cadastro de usuário.
 
 ### Vagas
 - `GET /jobs`: Listar todas as vagas.
@@ -65,15 +65,18 @@
     ```
 
 2. **Cadastro**
-    - Endpoint: `POST /auth/signup`
+    - Endpoint: `POST /auth/signup?role=ROLE_USER`
     - Body:
     ```json
     {
         "username": "novo_usuario",
-        "password": "nova_senha"
+        "password": "nova_senha".
+        "enabled": true,
+        "roles": ["USER"]
+  
     }
     ```
-    - Query Param: `role=USER` ou `role=ADMIN`
+    - Query Param: `roleS=USER` ou `roleS=ADMIN`
 
 3. **Criar Vaga**
     - Endpoint: `POST /jobs`
